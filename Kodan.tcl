@@ -138,13 +138,15 @@ proc p_atsijungimas_nuo_pc {} {
 	set visi_ip_adresai [db3 eval {SELECT pc FROM kompiuteriai ORDER BY Id}]
 	for {set nr 0} {$nr < [llength $visi_ip_adresai]} {incr nr} {
 		if {[info exists ::chan$nr]} {
-			chan close [set ::chan$nr]
+			catch {
+				chan close [set ::chan$nr]
+			}
 		}
 	}
 }
 
 proc p_send_command {nr command} {
-	if {[chan names [set ::chan$nr]] != ""} {
+	if {[info exists ::chan$nr] && [chan names [set ::chan$nr]] != ""} {
 		chan puts [set ::chan$nr] $command
 	}
 }
