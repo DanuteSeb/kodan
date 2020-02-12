@@ -122,6 +122,7 @@ proc p_prisijungimas_prie_pc {nr} {
 	set ::chan$nr [open |[list ssh -o ConnectTimeout=1 mokytoja@$ip sh -i] r+]
 	chan configure [set ::chan$nr] -buffering line -blocking false
 	chan event [set ::chan$nr] readable read_from_pc$nr
+	#These are for continuing monitoring of test end in case connection was lost and program reconnects to pupils PCs. Not fool proof though... if test ended while connection is out nothing would happen (I think), and manuall collection of results might be needed
 	p_send_command $nr {tail -f --pid $(pidof -x atsiskaitymas.tcl) /dev/null 2>/dev/null && echo task_ended &}
 	p_send_command $nr {tail -f --pid $(pidof -x Testas.tcl) /dev/null 2>/dev/null && echo test_ended &}
 	#p_pinger $nr
