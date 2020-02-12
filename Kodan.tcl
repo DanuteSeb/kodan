@@ -733,6 +733,7 @@ proc p_ip_adresu_suvedimo_langas {ar_pirma_karta} {
 			set ::komp_sk [llength $pc_ips]
 		}
 	}
+	destroy .duomenu
 	p_naujas_langas .duomenu "Kompiuteriai ir IP adresai"
 	set r 0
 	set display0 "DISPLAY=:0.0"
@@ -2070,7 +2071,7 @@ proc p_parinkti_klase {} {
 		} else {
 			p_icon_keitimas $nr mouse	
 			.kompiuteriai.$nr configure -text ""
-			if {[chan names [set ::chan$nr]] != ""} { #only bind choice if coputer connected, otherwise connecition bind should take priority
+			if {[info exists ::chan$nr] && [chan names [set ::chan$nr]] != ""} { #only bind choice if coputer connected, otherwise connecition bind should take priority
 				bind .kompiuteriai.c$nr <3> "p_rinktis_mokini $nr \"$klase\""
 			}
 			set mok_id 0	
